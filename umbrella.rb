@@ -53,13 +53,16 @@ number_of_hours_of_rain = 0.0
 
 13.times do |index|
   hour_hash = data_array[index]
-  hour_hash_percipitation_probability = hour_hash.fetch("precipProbability")
-  if hour_hash_percipitation_probability >= 0.1
+  hour_hash_precipitation_probability = hour_hash.fetch("precipProbability")
+  if hour_hash_precipitation_probability >= 0.1
+    hour_hash_precipitation_probability = hour_hash_precipitation_probability*100
     number_of_hours_of_rain = number_of_hours_of_rain + 1
-    p "The percipitation probability is " + hour_hash_percipitation_probability.to_s + " " + index.to_s + " hours from now."
+    p "The precipitation probability is " + hour_hash_precipitation_probability.to_i.to_s + "% " + index.to_s + " hours from now."
   end
 end
 
 if number_of_hours_of_rain > 0.0
   p "You might want to carry an umbrella!"
+else
+  p "You probably won't need an umbrella today."
 end
