@@ -1,8 +1,8 @@
 p "Where are you located?"
 
-# user_location = gets.chomp
+user_location = gets.chomp
 
-user_location = "Chicago"
+p "Checking the weather in " + user_location.capitalize + "..."
 
 gmaps_url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{ user_location }&key=#{ENV.fetch("GMAPS_KEY")}"
 
@@ -25,6 +25,8 @@ loc = geo.fetch("location")
 latitude = loc.fetch("lat")
 longitude = loc.fetch("lng")
 
+p "Your coordinates are "
+
 darksky_url = "https://api.darksky.net/forecast/#{ENV.fetch("DARK_SKY_KEY")}/#{ latitude },#{ longitude }"
 
 raw_data_2 = URI.open(darksky_url).read
@@ -35,6 +37,8 @@ currently_hash = parsed_data_2.fetch("currently")
 
 current_temperature = currently_hash.fetch("temperature").round(1)
 
+p "The current "
+
 minutely_hash = parsed_data_2.fetch("minutely")
 
 hourly_weather = minutely_hash.fetch("summary")
@@ -43,6 +47,17 @@ hourly_hash = parsed_data_2.fetch("hourly")
 
 data_array = hourly_hash.fetch("data")
 
-hour_1_hash = data_array[1]
+number_of_hours_of_rain = 0.0
 
-hour_1_percipitation_probability = hour_1_hash.fetch("precipProbability")
+13.times do |index|
+  hour_hash = data_array[index]
+  hour_hash_percipitation_probability = hour_hash.fetch("precipProbability")
+  if hour_hash_percipitation_probability >= 0.1
+    number_of_hours_of_rain = number_of_hours_of_rain + 1
+    p "The percipitation probability is " + hour_hash_percipitation_probability.to_s + " " + index.to_s + " hours from now."
+  end
+end
+
+if number_of_hours_of_rain > 0.0
+  p "You might want to carry an umbrella!"
+end
