@@ -25,7 +25,7 @@ loc = geo.fetch("location")
 latitude = loc.fetch("lat")
 longitude = loc.fetch("lng")
 
-p "Your coordinates are "
+p "Your coordinates are " + latitude.to_s + ", " + longitude.to_s + "."
 
 darksky_url = "https://api.darksky.net/forecast/#{ENV.fetch("DARK_SKY_KEY")}/#{ latitude },#{ longitude }"
 
@@ -37,11 +37,13 @@ currently_hash = parsed_data_2.fetch("currently")
 
 current_temperature = currently_hash.fetch("temperature").round(1)
 
-p "The current "
+p "It is currently " + current_temperature.to_s + "°F."
 
 minutely_hash = parsed_data_2.fetch("minutely")
 
 hourly_weather = minutely_hash.fetch("summary")
+
+p "Next hour: " + hourly_weather
 
 hourly_hash = parsed_data_2.fetch("hourly")
 
